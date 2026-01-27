@@ -27,8 +27,8 @@ icacls "./vscode-dotnet-runtime-library/install scripts/dotnet-install.ps1" /gra
 icacls "./vscode-dotnet-runtime-library/install scripts/dotnet-install.sh" /grant:r "users:(RX)" /C
 
 #################### Compile library ####################
-pushd vscode-dotnet-runtime-library
-if (Test-Path node_modules) { rm -r -force node_modules }
+Push-Location vscode-dotnet-runtime-library
+if (Test-Path node_modules) { Remove-Item -r -force node_modules }
 npm ci
 npm run compile
 
@@ -37,11 +37,11 @@ if (! $?)
     Write-Host "`nBuild failed!" -ForegroundColor $errorColor
     exit 1
 }
-popd
+Pop-Location
 
 #################### Compile runtime extension ####################
-pushd vscode-dotnet-runtime-extension
-if (Test-Path node_modules) { rm -r -force node_modules }
+Push-Location vscode-dotnet-runtime-extension
+if (Test-Path node_modules) { Remove-Item -r -force node_modules }
 npm ci
 npm run compile
 
@@ -50,11 +50,11 @@ if (! $?)
     Write-Host "`nBuild failed!" -ForegroundColor $errorColor
     exit 1
 }
-popd
+Pop-Location
 
 #################### Compile SDK extension ####################
-pushd vscode-dotnet-sdk-extension
-if (Test-Path node_modules) { rm -r -force node_modules }
+Push-Location vscode-dotnet-sdk-extension
+if (Test-Path node_modules) { Remove-Item -r -force node_modules }
 npm ci
 npm run compile
 
@@ -63,11 +63,11 @@ if (! $?)
     Write-Host "`nBuild failed!" -ForegroundColor $errorColor
     exit 1
 }
-popd
+Pop-Location
 
 #################### Compile sample extension ####################
-pushd sample
-if (Test-Path node_modules) { rm -r -force node_modules }
+Push-Location sample
+if (Test-Path node_modules) { Remove-Item -r -force node_modules }
 npm ci
 npm run compile
 
@@ -76,7 +76,7 @@ if (! $?)
     Write-Host "`nBuild failed!" -ForegroundColor $errorColor
     exit 1
 }
-popd
+Pop-Location
 
 #################### Copy Library Artifacts ####################
 & "$(Split-Path $MyInvocation.MyCommand.Path)/mock-webpack.ps1"
